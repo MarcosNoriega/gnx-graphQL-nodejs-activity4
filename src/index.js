@@ -8,8 +8,6 @@ require('./db');
 const types = require('./types');
 const includedTypes = Object.values(types);
 
-console.log(includedTypes);
-
 const schema = gnx.createSchema(includedTypes, includedTypes);
 
 app.use('/graphql', express_graphql({
