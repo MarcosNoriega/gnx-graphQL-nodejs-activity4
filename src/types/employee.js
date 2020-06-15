@@ -14,6 +14,8 @@ const {
     MustHaveMoreThan18
 } = require('../validators/employee.validator');
 
+const GenderTypeEnum = require('./enums/gender.enum');
+
 const gnx = require('@simtlix/gnx');
 const {Employee} = require('../models/employee');
 
@@ -35,7 +37,7 @@ const employeeType = new GraphQLObjectType({
         birthDate: {type: GraphQLNonNull(GraphQLDateTime)},
         firstName: {type: GraphQLNonNull(GraphQLString)},
         lastName: {type: GraphQLNonNull(GraphQLString)},
-        gender: {type: GraphQLNonNull(GraphQLString)},
+        gender: {type: GraphQLNonNull(GenderTypeEnum)},
         hireDate: {type: GraphQLNonNull(GraphQLDateTime)},
     }
 });
