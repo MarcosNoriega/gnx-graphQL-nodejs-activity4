@@ -1,23 +1,42 @@
 const {
     GraphQLObjectType,
     GraphQLNonNull,
-    GraphQLString
 } = require('graphql');
-const employeeType = require('./employee');
+
+const {
+    GraphQLDateTime
+} = require('graphql-iso-date');
+
+const {
+    DateValidator
+} = require('../validators/date.validator');
+
 const departmentsType = require('./departments');
+const employeeType = require('./employee');
 const {Employee} = require('../models/employee');
 const {Departments} = require('../models/departments');
-const gnx = require('@simtlix/gnx');
 const {DeptEmployee} = require('../models/deptEmployee');
+const gnx = require('@simtlix/gnx');
+
+const {
+    Cant2Employee
+} = require('../validators/departamentsEmployee.validator');
 
 const deptEmployeeType = new GraphQLObjectType({
    name: 'deptEmployee',
    description: '',
+   extensions: {
+        validations:{
+            'CREATE':
+            [
+                Cant2Employee,
+                DateValidator
+            ]
+        }
+   },
    fields: {
-    empId: {type: GraphQLNonNull(GraphQLString)},
-    deptId: {type: GraphQLNonNull(GraphQLString)},
-    fromDate: {type: GraphQLNonNull(GraphQLString)},
-    toDate: {type: GraphQLNonNull(GraphQLString)},
+    fromDate: {type: GraphQLNonNull(GraphQLDateTime)},
+    toDate: {type: GraphQLNonNull(GraphQLDateTime)},
     employee: {
         type: employeeType,
         extensions: {
@@ -26,7 +45,7 @@ const deptEmployeeType = new GraphQLObjectType({
                 connectionField: 'empId'
             }
         },
-        resolve (parent, args) {
+        resolve: (parent, args) => {
             return Employee.findById(parent.empId)
         }
     },
@@ -38,7 +57,7 @@ const deptEmployeeType = new GraphQLObjectType({
                  connectionField: 'deptId'
             }
         },
-        resolve (parent, args) {
+        resolve: (parent, args) => {
              return Departments.findById(parent.deptId)
         }
     }

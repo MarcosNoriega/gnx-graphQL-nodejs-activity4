@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const salariesFilds = {
-    empId: {type: Number, required: true},
+    empId: Schema.Types.ObjectId,
     salary: {type: Number, required: true},
     fromDate: {type: Date, required: true},
     toDate: {type: Date, required: true}

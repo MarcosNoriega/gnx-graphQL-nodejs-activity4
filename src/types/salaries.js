@@ -1,21 +1,49 @@
 const {
     GraphQLObjectType,
     GraphQLNonNull,
-    GraphQLInt,
     GraphQLFloat,
-    GraphQLString
 } = require('graphql');
+
+const {
+    GraphQLDateTime
+} = require('graphql-iso-date');
+
+const {
+    DateValidator
+} = require('../validators/date.validator');
+
 const gnx = require('@simtlix/gnx');
 const {Salaries} = require('../models/salaries');
+const employeeType = require('./employee');
+const {Employee} = require('../models/employee');
 
 const salariesType = new GraphQLObjectType({
     name: 'Salaries',
     description: 'Represent salaries',
+    extensions: {
+        validations: {
+            'CREATE':
+            [
+                DateValidator
+            ]
+        }
+    },
     fields: {
-        empId: {type: GraphQLNonNull(GraphQLInt)},
         salary: {type: GraphQLNonNull(GraphQLFloat)},
-        fromDate: {type: GraphQLNonNull(GraphQLString)},
-        toDate: {type: GraphQLNonNull(GraphQLString)}
+        fromDate: {type: GraphQLNonNull(GraphQLDateTime)},
+        toDate: {type: GraphQLNonNull(GraphQLDateTime)},
+        employee: {
+            type: employeeType,
+            extensions: {
+                relation: {
+                    embedded: false,
+                    connectionField: 'empId'
+                }
+            },
+            resolve: (parent, args) => {
+                return Employee.findById(parent.empId);
+            }
+        }
     }
 });
 

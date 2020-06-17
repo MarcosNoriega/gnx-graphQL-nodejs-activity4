@@ -18,7 +18,7 @@ class DateValidatorUsedError extends GNXError{
     }
 }
 
-module.exports = DateValidator;
+module.exports = {DateValidator};
 
 
 

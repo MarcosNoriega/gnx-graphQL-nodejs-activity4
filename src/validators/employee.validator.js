@@ -1,6 +1,8 @@
 const gnx = require('@simtlix/gnx');
 const GNXError = gnx.GNXError;
 const {Employee} = require('../models/employee');
+const {Salaries} = require('../models/salaries');
+const {DeptEmployee} = require('../models/deptEmployee');
 
 const CantRepeatDNI = {
     validate: async (typeName, originalObject, materializedObject) => {
@@ -19,11 +21,11 @@ class CantRepeatDNIUsedError extends GNXError {
 
 const MustHaveMoreThan18 = {
     validate: async (typeName, originalObject, materializedObject) => {
-        dateReceived = new Date(materializedObject.birthDate);
+        let dateReceived = new Date(materializedObject.birthDate);
+        let currelyDate = new Date();
 
-        if (Date.now.getYear() - dateRecived.getYear() < 18){
+        if (currelyDate.getYear() - dateReceived.getYear() < 18){
             throw new MustHaveMoreThan18UsedError(typeName);
-
         }
     }
 }
@@ -34,4 +36,37 @@ class MustHaveMoreThan18UsedError extends GNXError {
     }
 };
 
-module.exports = {CantRepeatDNI, MustHaveMoreThan18}
+const CantDeleteEmployeeWithSalaries = {
+    validate: async (typeName, originalObject, materializedObject) => {
+        const salariesFinded = await Salaries.findOne({ 'empId':  originalObject});
+
+        if (salariesFinded) {
+            throw new CantDeleteEmployeeWithSalariesError(typeName);
+        }
+    }
+}
+
+class CantDeleteEmployeeWithSalariesError extends GNXError {
+    constructor(typeName) {
+        super(typeName, "Employee have at least 1 salarie related", 'CantDeleteEmployeeWithSalarie');
+    }
+};
+
+const CantDeleteEmployeeWithDepartment = {
+    validate: async (typeName, originalObject, materializedObject) => {
+        const deptEmployeeFinded = await DeptEmployee.findOne({ 'empId':  originalObject});
+
+        if (deptEmployeeFinded) {
+            throw new CantDeleteEmployeeWithDeptEmployeeError(typeName);
+        }
+    }
+}
+
+
+class CantDeleteEmployeeWithDeptEmployeeError extends GNXError {
+    constructor(typeName) {
+        super(typeName, "Employee have at least 1 DeptEmployee related", 'CantDeleteEmployeeWithSalarie');
+    }
+};
+
+module.exports = {CantRepeatDNI, MustHaveMoreThan18, CantDeleteEmployeeWithSalaries, CantDeleteEmployeeWithDepartment}

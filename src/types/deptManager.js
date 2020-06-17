@@ -1,8 +1,20 @@
 const {
     GraphQLObjectType,
-    GraphQLNonNull,
-    GraphQLString
+    GraphQLNonNull
 } = require('graphql');
+
+const {
+    GraphQLDateTime
+} = require('graphql-iso-date');
+
+const {
+    DateValidator
+} = require('../validators/date.validator');
+
+const {
+    Cant2Employee
+} = require('../validators/departamentsManager.validator');
+
 const employeeType = require('./employee');
 const departmentsType = require('./departments');
 const {Employee} = require('../models/employee');
@@ -13,11 +25,18 @@ const {DeptManager} = require('../models/deptManager');
 const deptManagerType = new GraphQLObjectType({
    name: 'deptManager',
    description: '',
+   extensions: {
+    validations:{
+        'CREATE':
+        [
+            Cant2Employee,
+            DateValidator
+        ]
+    }
+},
    fields: {
-    empId: {type: GraphQLNonNull(GraphQLString)},
-    deptId: {type: GraphQLNonNull(GraphQLString)},
-    fromDate: {type: GraphQLNonNull(GraphQLString)},
-    toDate: {type: GraphQLNonNull(GraphQLString)},
+    fromDate: {type: GraphQLNonNull(GraphQLDateTime)},
+    toDate: {type: GraphQLNonNull(GraphQLDateTime)},
     employee: {
         type: employeeType,
         extensions: {

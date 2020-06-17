@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const titleFields = {
-    empId: {type: Number, required: true},
+    empId: Schema.Types.ObjectId,
     title: {type: String, required: true},
     fromDate: {type: Date, required: true},
     toDate: {type: Date, required: true}

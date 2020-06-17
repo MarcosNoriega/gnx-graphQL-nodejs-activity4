@@ -23,3 +23,6 @@ const AuditableObjectFields = {
         }
     }
 }
+
+module.exports = {AuditableObjectFields};
+  
