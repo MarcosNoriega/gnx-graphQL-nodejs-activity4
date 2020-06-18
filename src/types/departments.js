@@ -8,7 +8,7 @@ const {Departments} = require('../models/departments');
 const {
     CantRepeatName, 
     CantDeleteDepartamentWithDeptEmp, 
-    CantDeleteDEpartamentWithDeptMngError
+    CantDeleteDepartamentWithDeptMng
 } = require('../validators/departments.validator');
 
 const departmentsType = new GraphQLObjectType({
@@ -23,7 +23,7 @@ const departmentsType = new GraphQLObjectType({
             'DELETE':
             [
                 CantDeleteDepartamentWithDeptEmp,
-                CantDeleteDEpartamentWithDeptMngError
+                CantDeleteDepartamentWithDeptMng
             ]
         }
     },

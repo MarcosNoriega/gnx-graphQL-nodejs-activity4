@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const deptEmployeeFields = {
     empId: Schema.Types.ObjectId,
-    deptId: {type: Number, required: true},
+    deptId: Schema.Types.ObjectId,
     fromDate: {type: Date, required: true},
     toDate: {type: Date, required: true}
 }

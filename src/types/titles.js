@@ -1,13 +1,16 @@
 const {
     GraphQLObjectType,
     GraphQLNonNull,
-    GraphQLInt,
     GraphQLString
 } = require('graphql');
 
 const {
     GraphQLDateTime
 } = require('graphql-iso-date');
+
+const {
+    DateValidator
+} = require('../validators/date.validator');
 
 const gnx = require('@simtlix/gnx');
 const {Titles} = require('../models/titles');
@@ -25,7 +28,13 @@ const titleType = new GraphQLObjectType({
         validations: {
             'CREATE': 
             [
-                CantRepeatTitle
+                CantRepeatTitle,
+                DateValidator
+            ],
+            'UPDATE':
+            [
+                CantRepeatTitle,
+                DateValidator
             ]
         }
     },

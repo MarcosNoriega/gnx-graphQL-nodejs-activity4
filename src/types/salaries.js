@@ -25,6 +25,10 @@ const salariesType = new GraphQLObjectType({
             'CREATE':
             [
                 DateValidator
+            ],
+            'UPDATE':
+            [
+                DateValidator
             ]
         }
     },

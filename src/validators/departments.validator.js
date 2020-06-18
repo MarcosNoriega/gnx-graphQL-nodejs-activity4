@@ -32,24 +32,24 @@ const CantDeleteDepartamentWithDeptEmp = {
 
 class CantDeleteDepartamentWithDeptEmpError extends GNXError {
     constructor(typeName) {
-        super(typeName, "Employee have at least 1 DeptEmployee related", 'CantDeleteEmployeeWithSalarie');
+        super(typeName, "Departament have at least 1 DeptEmployee related", 'CantDeleteDEpartamentWithSalarie');
     }
 };
 
-const CantDeleteDEpartamentWithDeptMng = {
+const CantDeleteDepartamentWithDeptMng = {
     validate: async (typeName, originalObject, materializedObject) => {
-        const deptManagerFinded = DeptManager.findOne({'deptId': originalObject});
+        const deptManagerFinded = await DeptManager.findOne({'deptId': originalObject});
 
-        if (deptEmployeeFinded) {
-            throw new CantDeleteDepartamentWithDeptEmpError(typeName);
+        if (deptManagerFinded) {
+            throw new CantDeleteDepartamentWithDeptMngError(typeName);
         }
     }
 }
 
-class CantDeleteDEpartamentWithDeptMngError extends GNXError {
+class CantDeleteDepartamentWithDeptMngError extends GNXError {
     constructor(typeName) {
-        super(typeName, "Employee have at least 1 DeptManager related", 'CantDeleteEmployeeWithSalarie');
+        super(typeName, "Departament have at least 1 DeptManager related", 'CantDeleteDEpartamentWithSalarie');
     }
 };
 
-module.exports = {CantRepeatName, CantDeleteDepartamentWithDeptEmp, CantDeleteDEpartamentWithDeptMngError};
+module.exports = {CantRepeatName, CantDeleteDepartamentWithDeptEmp, CantDeleteDepartamentWithDeptMng};
